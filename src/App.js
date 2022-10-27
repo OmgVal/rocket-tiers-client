@@ -12,16 +12,16 @@ import Register from './components/pages/Register'
 import Navbar from './components/partials/Navbar'
 import './App.css'
 import jwt_decode from 'jwt-decode'
-
+import Welcome from './components/pages/Welcome'
 import NewTournament from './components/pages/NewTournament'
 import Tournament from './components/pages/Tournament'
 import Tournaments from './components/pages/Tournaments'
 import EditTournament from './components/pages/EditTournament'
 import Submission from './components/pages/Submission'
+import Submissions from './components/pages/Submissions'
 import EditSubmission from './components/pages/Submission'
-import Search from './components/pages/Search'
+// import Search from './components/pages/Search'
 import EditComment from './components/pages/EditComment'
-import EditTournament from './components/pages/EditTournament'
 import EditProfile from './components/pages/EditProfile'
 
 function App() {
@@ -64,7 +64,7 @@ function App() {
         <Routes>
           <Route 
             path="/"
-            element={currentUser ? <Welcome currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/" />}
+            element={<Welcome currentUser={currentUser} setCurrentUser={setCurrentUser} /> }
           />
 
           <Route 
@@ -84,44 +84,53 @@ function App() {
           />
            <Route 
             path="/tournaments/new"
-            element={currentUser ? <NewTournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/" />}
+            element={currentUser ? <NewTournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login" />}
           />
            <Route 
             path="/tournaments/:id"
-            element={currentUser ? <Tournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/" />}
+            element={<Tournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> }
           />
 
            <Route 
             path="/tournaments/:id/edit"
-            element={currentUser ? <EditTournament /> : <Navigate to="/" />}
+            element={currentUser ? <EditTournament /> : <Navigate to="/login
+            " />}
           />
            <Route 
             path="/tournaments/:id/submission"
-            element={currentUser ? <Submission /> : <Navigate to="/" />}
+            element={currentUser ? <Submission /> : <Navigate to="/login
+            " />}
           />
            <Route 
             path="/tournaments/:id/submission/:subid"
-            element={currentUser ? <EditSubmission /> : <Navigate to="/" />}
+            element={currentUser ? <EditSubmission /> : <Navigate to="/login
+            " />}
           />
            <Route 
             path="/tournaments/:id/submissions"
-            element={currentUser ? <Submissions /> : <Navigate to="/" />}
+            element={currentUser ? <Submissions /> : <Navigate to="/login
+            " />}
           />
           <Route 
             path="/tournaments/:id/comments/:commentid/edit"
-            element={currentUser ? <EditComment /> : <Navigate to="/" />}
+            element={currentUser ? <EditComment /> : <Navigate to="/login
+            " />}
           />
           <Route 
             path="/:username"
-            element={currentUser ? <Profile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/" />}
+            element={currentUser ? <Profile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/login
+            " />}
           />
            <Route 
             path="/:username/edit"
-            element={currentUser ? <EditProfile handleLogout={handleLogout}/> : <Navigate to="/" />}
+            element={currentUser ? <EditProfile handleLogout={handleLogout}/> : <Navigate to="/login
+            " />}
           />
            {/* <Route 
             path="/search"
-            element={currentUser ? <Search /> : <Navigate to="/" />}
+            element={currentUser ? <Search /> : <Navigate to="/login
+
+            " />}
           />
            <Route 
             path="/*"
