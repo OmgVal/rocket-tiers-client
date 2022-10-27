@@ -1,26 +1,45 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Navigate } from 'react-router-dom'
 
 export default function Register({ currentUser, setCurrentUser }) {
 	// state for the controlled form
-	const [name, setName] = useState('')
+	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [msg, setMsg] = useState('')
+
+	// Cloudinary 
+	const [fileInputState, setFileInputState] = useState('')
+	
+	
+	// Multer
+	const inputRef = useRef(null)
+	const [formImg, setFormImg] = useState('')
+
+	const handleFileInputChange = (e) => {
+		const file = e.target.files[0]
+		// previewFile(file);
+		setFormImg(file)
+	}
 
 	// submit event handler
 	const handleSubmit = async e => {
 		e.preventDefault()
 		try {
-			// post fortm data to the backend
-			const reqBody = {
-				name,
-				email, 
-				password
+			// post form data to the backend
+			const formData = new FormData()
+			formData.append('username', username)
+			formData.append('email', email)
+			formData.append('password', password)
+			formData.append('image', formImg)
+			const options = {
+				headers: {
+					"Content-Type" : "multipart/form-data"
+				}
 			}
-			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/register`, reqBody)
+			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/register`, formData, options)
 
 			// save the token in localstorage
 			const { token } = response.data
@@ -52,13 +71,13 @@ export default function Register({ currentUser, setCurrentUser }) {
 			<p>{msg}</p>
 
 			<form onSubmit={handleSubmit}>
-				<label htmlFor='name'>Name:</label>
+				<label htmlFor='username'>Username:</label>
 				<input 
-					type="text"
-					id="name"
+					type="username"
+					id="username"
 					placeholder='your username...'
-					onChange={e => setName(e.target.value)}
-					value={name}
+					onChange={e => setUsername(e.target.value)}
+					value={username}
 				/>
 
 				<label htmlFor='email'>Email:</label>
@@ -78,6 +97,24 @@ export default function Register({ currentUser, setCurrentUser }) {
 					onChange={e => setPassword(e.target.value)}
 					value={password}
 				/>
+				<div>
+					<input 
+						type = "file"  
+						name = "image" 
+						id = "image"
+						ref = {inputRef}					
+						onChange={handleFileInputChange} 
+						value={fileInputState}
+						accept=".jpg, .jpeg, .png"
+						style = {{height: '60px', color: formImg ? 'transparent' : ''}}
+
+					/>
+				<div className="preview">
+						<p>{formImg ? 'Profile photo uploaded successfully!' : 'No profile photo currently selected'}</p>
+				</div>
+
+					<label htmlFor='file'>Profile Photo (optional):</label>
+				</div>
 
 				<button type="submit">Register</button>
 			</form>
