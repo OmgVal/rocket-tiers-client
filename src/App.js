@@ -8,14 +8,25 @@ import { useState, useEffect } from 'react'
 import Login from './components/pages/Login'
 import Profile from './components/pages/Profile'
 import Register from './components/pages/Register'
-import Welcome from './components/pages/Welcome'
-import Navbar from './components/Navbar'
+// import Tournaments from './components/pages/Tournaments'
+import Navbar from './components/partials/Navbar'
 import './App.css'
 import jwt_decode from 'jwt-decode'
 
+import NewTournament from './components/pages/NewTournament'
+import Tournament from './components/pages/Tournament'
+import Tournaments from './components/pages/Tournaments'
+import EditTournament from './components/pages/EditTournament'
+import Submission from './components/pages/Submission'
+import EditSubmission from './components/pages/Submission'
+import Search from './components/pages/Search'
+import EditComment from './components/pages/EditComment'
+import EditTournament from './components/pages/EditTournament'
+import EditProfile from './components/pages/EditProfile'
+
 function App() {
   // the currently logged in user will be stored up here in state
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(localStorage.getItem('jwt')? jwt_decode(localStorage.getItem('jwt')): null)
 
   // useEffect -- if the user navigates away form the page, we will log them back in
   useEffect(() => {
@@ -53,7 +64,7 @@ function App() {
         <Routes>
           <Route 
             path="/"
-            element={<Welcome />}
+            element={currentUser ? <Welcome currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/" />}
           />
 
           <Route 
@@ -67,11 +78,55 @@ function App() {
           />
 
           {/* conditionally render auth locked routes */}
-          <Route 
-            path="/profile"
-            element={currentUser ? <Profile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/login" />}
+          <Route
+            path="/tournaments"
+            element={<Tournaments currentUser={currentUser} setCurrentUser={setCurrentUser}/>}
+          />
+           <Route 
+            path="/tournaments/new"
+            element={currentUser ? <NewTournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/tournaments/:id"
+            element={currentUser ? <Tournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/" />}
           />
 
+           <Route 
+            path="/tournaments/:id/edit"
+            element={currentUser ? <EditTournament /> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/tournaments/:id/submission"
+            element={currentUser ? <Submission /> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/tournaments/:id/submission/:subid"
+            element={currentUser ? <EditSubmission /> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/tournaments/:id/submissions"
+            element={currentUser ? <Submissions /> : <Navigate to="/" />}
+          />
+          <Route 
+            path="/tournaments/:id/comments/:commentid/edit"
+            element={currentUser ? <EditComment /> : <Navigate to="/" />}
+          />
+          <Route 
+            path="/:username"
+            element={currentUser ? <Profile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/:username/edit"
+            element={currentUser ? <EditProfile handleLogout={handleLogout}/> : <Navigate to="/" />}
+          />
+           {/* <Route 
+            path="/search"
+            element={currentUser ? <Search /> : <Navigate to="/" />}
+          />
+           <Route 
+            path="/*"
+            element={<Navigate to="/" />}
+          /> */}
         </Routes>
       </div>
     </Router>
