@@ -181,7 +181,7 @@ export default function Profile({ currentUser, handleLogout }) {
 				</div>
 
 				<div>
-					<div><p>{tournaments.length} Tournaments</p></div>
+					<div><p>{tournaments} Tournaments</p></div>
 				</div>
 
 				<div>
@@ -209,7 +209,7 @@ export default function Profile({ currentUser, handleLogout }) {
 			</div>
 
 			<div>
-				<div><p>{tournaments.length} Posts</p></div>
+				<div><p>{tournaments} Tournaments</p></div>
 			</div>
 		</div>
 

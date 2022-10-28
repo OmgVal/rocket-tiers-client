@@ -27,8 +27,11 @@ export default function Tournaments({currentUser, setCurrentUser}){
                     })
                     
                     if (admin == false){
-                        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${currentUser.username}`)
-                        
+                        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins`)
+                        console.log(response)
+                        if (currentUser.id === response.data._id) {
+                            setAdmin(true)
+                        } else { setAdmin(false) }
     
                     }
 
@@ -133,7 +136,7 @@ export default function Tournaments({currentUser, setCurrentUser}){
     })
 
 
-    const adminView = (
+    const displayBtn = (
         <div>
             <Link to='/tournaments/new'><button>Add New</button></Link>
         </div>
@@ -145,7 +148,7 @@ export default function Tournaments({currentUser, setCurrentUser}){
             {msg}
             {renderTournaments} 
 
-            {admin ? adminView : null}
+            {admin ? displayBtn : 'error'}
         </div>
     )
 }
