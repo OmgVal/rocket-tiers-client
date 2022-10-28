@@ -13,7 +13,7 @@ export default function Profile({ currentUser, handleLogout }) {
 	const [msg, setMsg] = useState('')
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [previewSource, setPreviewSource] = useState('')
-	const [isInitialRender, setIsInitialRender] = useState(true);
+    const [isInitialRender, setIsInitialRender] = useState(true);
 
 
 	const { username } = useParams()
@@ -54,28 +54,27 @@ export default function Profile({ currentUser, handleLogout }) {
 	useEffect(() => {
 		const getProfile = async () => {
 			try {
-				if (isInitialRender) {
-					console.log(currentUser)
-					setIsInitialRender(false);
-					// get the token from local storage
-					const token = localStorage.getItem('jwt')
-					// make the auth headers
-					const options = {
-						headers: {
-							'Authorization': token
-						}
-					}
-					// hit the auth locked endpoint
-					const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}`, options)
-	
-					//check to see if user is viewing their own profile and set Profile state accordingly
-					if (currentUser.id === response.data._id) {
-						setProfile(true)
-					} else { setProfile(false) }
-					console.log(response)
-					setUser(response.data)
-					setTournaments(response.data.submissions)
-				}
+                if (isInitialRender) {
+                    setIsInitialRender(false);
+                    // get the token from local storage
+                    const token = localStorage.getItem('jwt')
+                    // make the auth headers
+                    const options = {
+                        headers: {
+                            'Authorization': token
+                        }
+                    }
+                    // hit the auth locked endpoint
+                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}`, options)
+
+                    //check to see if user is viewing their own profile and set Profile state accordingly
+                    if (currentUser.id === response.data._id) {
+                        setProfile(true)
+                    } else { setProfile(false) }
+
+                    setUser(response.data)
+                    setTournaments(response.data.tournaments)
+                }
 			} catch (err) {
 				console.warn(err)
 				setMsg(err.response.data.msg)
@@ -84,7 +83,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		}
 		getProfile()
 		//username is passed in the array to render the useEffect again each time user goes to different user's profile
-	}, [username, isInitialRender, currentUser, handleLogout])
+	}, [username, isInitialRender])
 
 
 
@@ -100,7 +99,7 @@ export default function Profile({ currentUser, handleLogout }) {
 					"Content-Type": "multipart/form-data"
 				}
 			}
-			const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}/photo`, formData, options)
+			const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}/photo`, formData, options)
 			setUser(response.data)
 			setModalIsOpenToFalse()
 
@@ -131,14 +130,14 @@ export default function Profile({ currentUser, handleLogout }) {
 			photoMsg = 'Change Photo'
 			return (
 				<>
-					<img src={user.image} className='profileAvi' alt='user profile pic' />
+					<img src={user.image} className='profileAvi' />
 				</>
 			)
 		} else {
 			photoMsg = 'Add Photo'
 			return (
 				<>
-					<img src={require('../../assets/defaultPic.jpeg')} alt='user profile pic' className='profileAvi' />
+					<img src={require('../../assets/defaultPic.jpeg')} className='profileAvi' />
 				</>
 			)
 		}
@@ -150,7 +149,7 @@ export default function Profile({ currentUser, handleLogout }) {
 			<div>
 				<div>
 					{photoCheck()}
-					<h3 >@{currentUser.username}</h3>
+					<h3 >@{username}</h3>
 					{ranksCheck()}
 					<Modal isOpen={modalIsOpen}>
 						<button onClick={setModalIsOpenToFalse}>close</button>
@@ -163,14 +162,13 @@ export default function Profile({ currentUser, handleLogout }) {
 									ref={inputRef}
 									onChange={handleFileInputChange}
 									value={fileInputState}
-									alt='user profile pic'
 									accept=".jpg, .jpeg, .png"
 									style={{ color: formImg ? 'transparent' : '' }}
 								/>
 								<label htmlFor='file'>Upload Profile Photo:</label>
 							</div>
 							{previewSource ?
-								<img src={previewSource} alt="file preview" style={{ height: 'auto', width: '100%' }} /> : ''
+								<img src={previewSource} alt="User uploaded image" style={{ height: 'auto', width: '100%' }} /> : ''
 							}
 							<div>
 								<button type="submit" >Submit</button>
@@ -181,7 +179,7 @@ export default function Profile({ currentUser, handleLogout }) {
 				</div>
 
 				<div>
-					<div><p>{tournaments.length} Tournaments</p></div>
+					<div><p>{tournaments ? tournaments.length : 'No Tournaments Here'} Tournaments</p></div>
 				</div>
 
 				<div>
@@ -190,7 +188,7 @@ export default function Profile({ currentUser, handleLogout }) {
 							<button onClick={setModalIsOpenToTrue} >{photoMsg}</button>
 						</div>
 
-						<Link to={`/${username}/edit`}>
+						<Link to={`admin/${username}/edit`}>
 							<button>Edit Profile</button>
 						</Link>
 					</div>
@@ -199,17 +197,17 @@ export default function Profile({ currentUser, handleLogout }) {
 		</div>
 	)
 
-	const viewAdminProfile = (
+	const viewOtherProfile = (
 		// if the user is viewing someone else's profile...
 		<div>
 			<div>
 				{photoCheck()}
-				<h3>@{username}</h3>
+				<h3>@{currentUser.username}</h3>
 				{user.bio}
 			</div>
 
 			<div>
-				<div><p>{tournaments.length} Posts</p></div>
+				{/* <div><p>{tournaments.length} Posts</p></div> */}
 			</div>
 		</div>
 
@@ -219,7 +217,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		<div>
 			{msg}
 			{/* conditionally render based on currentUser and profileUser */}
-			{profile ? viewUserProfile : viewAdminProfile}
+			{profile ? viewUserProfile : viewOtherProfile}
 		</div>
 	)
 

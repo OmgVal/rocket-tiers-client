@@ -5,9 +5,9 @@ import axios from "axios"
 export default function EditProfile({handleLogout, setCurrentUser, currentUser}){
     const { username } = useParams()
     const [isInitialRender, setIsInitialRender] = useState(true);
+
     const [form, setForm] = useState({
-        username: username,
-        ranks: ''
+        username: username
         // profilePic: '' 
         // edit user password?
     })
@@ -15,12 +15,13 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
 
     const navigate = useNavigate()
 
-    useEffect(() => {
+    useEffect((e) => {
         const getUser = async () => {
             try {
+                e.preventDefault()
                 if (isInitialRender) {
                     setIsInitialRender(false);
-                    
+            
                     // get the token from local storage
                     const token = localStorage.getItem('jwt')
                     // make the auth headers
@@ -30,11 +31,7 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                         }
                     }
                     // hit the auth locked endpoint
-                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}`, options)
-                    if (response.data.ranks) {
-                        setForm({ ...form, ranks: response.data.ranks })
-                    }
-                    // console.log(response.data)
+                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}`, options)
                 }
             } catch (err) {
                 console.warn(err)
@@ -50,13 +47,11 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
         try {
             e.preventDefault()
             // axios.put/.post('url', data for the req body)
-            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}/edit`, form)
+            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}/edit`, form)
             // navigate back to the details page for this bounty
-            // console.log('edit page:', response)
             setCurrentUser({...currentUser, username: response.data.username})
-            setForm({ username: response.data.username, ranks: response.data.ranks }) 
-            // console.log(currentUser)
-            navigate(`/${form.username}`)
+            setForm({ username: response.data.username }) 
+            navigate(`/admin/${form.username}`)
         } catch (err) {
             console.warn(err)
             if (err.response) {
@@ -76,7 +71,7 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                 }
             }
             // hit the auth locked endpoint
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}`, options)
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}`, options)
             handleLogout()
             navigate('/')
 
@@ -101,7 +96,7 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                         onChange={e => setForm({ ...form, username: e.target.value })}
                     />
                 </div>
-                <div>
+                {/* <div>
                     <label htmlFor='ranks'>ranks:</label>
                     <input
                         type='text'
@@ -109,12 +104,12 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                         value={form.ranks}
                         onChange={e => setForm({ ...form, ranks: e.target.value })}
                     />
-                </div>
+                </div> */}
 
                 <button type='submit' style={{ backgroundColor: '#FC6767', width: '150px' }}>Submit</button>
             </form>
 
-            <Link to={`/${username}`}>
+            <Link to={`/admin/${username}`}>
                 <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
             </Link>
             <button onClick={handleDeleteUser} style={{ backgroundColor: 'red', width: '150px' }}>Delete Account</button>

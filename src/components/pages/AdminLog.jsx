@@ -3,9 +3,9 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Navigate, Link } from 'react-router-dom'
 
-export default function Login({ currentUser, setCurrentUser }) {
+export default function AdminLog({ currentUser, setCurrentUser }) {
 	// state for the controlled form
-	const [email, setEmail] = useState('')
+	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [msg, setMsg] = useState('')
 
@@ -15,10 +15,10 @@ export default function Login({ currentUser, setCurrentUser }) {
 		try {
 			// post fortm data to the backend
 			const reqBody = {
-				email, 
+				username, 
 				password
 			}
-			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/login`, reqBody)
+			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/login`, reqBody)
 
 			// save the token in localstorage
 			const { token } = response.data
@@ -40,7 +40,8 @@ export default function Login({ currentUser, setCurrentUser }) {
 
 	// conditionally render a navigate component
 	if (currentUser) {
-		return <Navigate to={`/${currentUser.username}`} />
+		console.log(currentUser)
+		return <Navigate to={`/admin/${username}`} />
 	}
 
 	return (
@@ -50,13 +51,13 @@ export default function Login({ currentUser, setCurrentUser }) {
 			<p>{msg}</p>
 
 			<form onSubmit={handleSubmit}>
-				<label htmlFor='email'>Email:</label>
+				<label htmlFor='username'>Username:</label>
 				<input 
-					type="email"
-					id="email"
-					placeholder='your email...'
-					onChange={e => setEmail(e.target.value)}
-					value={email}
+					type="username"
+					id="username"
+					placeholder='your username...'
+					onChange={e => setUsername(e.target.value)}
+					value={username}
 				/>
 
 				<label htmlFor='password'>Password:</label>
@@ -68,8 +69,10 @@ export default function Login({ currentUser, setCurrentUser }) {
 					value={password}
 				/>
 
+
 				<button type="submit">Login</button>
-				<p>admin? <Link to='/admin'>login here</Link></p>
+				<p>Not an admin? <Link to='/login'>login here</Link></p>
+				<p>New admin? <Link to='/adminreg'>sign up</Link></p>
 			</form>
 		</div>
 	)

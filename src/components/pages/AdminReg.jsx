@@ -3,11 +3,11 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Navigate } from 'react-router-dom'
 
-export default function Register({ currentUser, setCurrentUser }) {
+export default function AdminRegister({ currentUser, setCurrentUser }) {
 	// state for the controlled form
 	const [username, setUsername] = useState('')
-	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [adminkey, setAdminkey] = useState('')
 	const [msg, setMsg] = useState('')
 
 	// Cloudinary 
@@ -31,16 +31,15 @@ export default function Register({ currentUser, setCurrentUser }) {
 			// post form data to the backend
 			const formData = new FormData()
 			formData.append('username', username)
-			formData.append('email', email)
 			formData.append('password', password)
+            formData.append('adminkey', adminkey)
 			formData.append('image', formImg)
 			const options = {
 				headers: {
 					"Content-Type" : "multipart/form-data"
 				}
 			}
-			console.log(formData)
-			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/register`, formData, options)
+			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/register`, formData, options)
 
 			// save the token in localstorage
 			const { token } = response.data
@@ -62,12 +61,12 @@ export default function Register({ currentUser, setCurrentUser }) {
 
 	// conditionally render a navigate component
 	if (currentUser) {
-		return <Navigate to={`/admin/${username}`} />
+		return <Navigate to={`/admin/${username}`}/>
 	}
 
 	return (
 		<div>
-			<h1>Register for an account:</h1>
+			<h1>Register an Admin:</h1>
 
 			<p>{msg}</p>
 
@@ -81,15 +80,6 @@ export default function Register({ currentUser, setCurrentUser }) {
 					value={username}
 				/>
 
-				<label htmlFor='email'>Email:</label>
-				<input 
-					type="email"
-					id="email"
-					placeholder='your email...'
-					onChange={e => setEmail(e.target.value)}
-					value={email}
-				/>
-
 				<label htmlFor='password'>Password:</label>
 				<input 
 					type="password"
@@ -97,6 +87,15 @@ export default function Register({ currentUser, setCurrentUser }) {
 					placeholder='password...'
 					onChange={e => setPassword(e.target.value)}
 					value={password}
+				/>
+
+				<label htmlFor='adminkey'>Admin Key:</label>
+				<input 
+					type="password"
+					id="adminkey"
+					placeholder='your adminkey...'
+					onChange={e => setAdminkey(e.target.value)}
+					value={adminkey}
 				/>
 				<div>
 					<input 

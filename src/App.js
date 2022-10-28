@@ -4,15 +4,21 @@ import {
   Route,
   Navigate
 } from 'react-router-dom'
+
+// Login pages
 import { useState, useEffect } from 'react'
 import Login from './components/pages/Login'
-import Profile from './components/pages/Profile'
+import AdminLog from './components/pages/AdminLog'
 import Register from './components/pages/Register'
-// import Tournaments from './components/pages/Tournaments'
+import AdminRegister from './components/pages/AdminReg'
+
+// Main Page & Nav
 import Navbar from './components/partials/Navbar'
 import './App.css'
 import jwt_decode from 'jwt-decode'
 import Welcome from './components/pages/Welcome'
+
+// Tournament Pages
 import NewTournament from './components/pages/NewTournament'
 import Tournament from './components/pages/Tournament'
 import Tournaments from './components/pages/Tournaments'
@@ -20,9 +26,14 @@ import EditTournament from './components/pages/EditTournament'
 import Submission from './components/pages/Submission'
 import Submissions from './components/pages/Submissions'
 import EditSubmission from './components/pages/Submission'
-// import Search from './components/pages/Search'
 import EditComment from './components/pages/EditComment'
+// import Search from './components/pages/Search'
+
+// Profiles
+import Profile from './components/pages/Profile'
 import EditProfile from './components/pages/EditProfile'
+import AdminProfile from './components/pages/AdminProfile'
+import EditAdminProfile from './components/pages/EditAdminProfile'
 
 function App() {
   // the currently logged in user will be stored up here in state
@@ -73,9 +84,20 @@ function App() {
           />
 
           <Route 
+            path="/adminreg"
+            element={<AdminRegister currentUser={currentUser} setCurrentUser={setCurrentUser} />}
+          />
+
+          <Route 
             path="/login"
             element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />}
           />
+
+          <Route 
+            path="/admin"
+            element={<AdminLog currentUser={currentUser} setCurrentUser={setCurrentUser} />}
+          />
+
 
           {/* conditionally render auth locked routes */}
           <Route
@@ -113,8 +135,7 @@ function App() {
           />
           <Route 
             path="/tournaments/:id/comments/:commentid/edit"
-            element={currentUser ? <EditComment /> : <Navigate to="/login
-            " />}
+            element={currentUser ? <EditComment /> : <Navigate to="/login" />}
           />
           <Route 
             path="/:username"
@@ -123,7 +144,17 @@ function App() {
           />
            <Route 
             path="/:username/edit"
-            element={currentUser ? <EditProfile handleLogout={handleLogout}/> : <Navigate to="/login
+            element={currentUser ? <EditProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
+            " />}
+          />
+          <Route 
+            path="/admin/:username"
+            element={currentUser ? <AdminProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/login
+            " />}
+          />
+           <Route 
+            path="/admin/:username/edit"
+            element={currentUser ? <EditAdminProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
            {/* <Route 
