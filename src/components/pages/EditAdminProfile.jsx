@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
+
 export default function EditProfile({handleLogout, setCurrentUser, currentUser}){
     const { username } = useParams()
     const [isInitialRender, setIsInitialRender] = useState(true);
@@ -15,10 +16,9 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
 
     const navigate = useNavigate()
 
-    useEffect((e) => {
+    useEffect(() => {
         const getUser = async () => {
             try {
-                e.preventDefault()
                 if (isInitialRender) {
                     setIsInitialRender(false);
             
@@ -32,6 +32,10 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                     }
                     // hit the auth locked endpoint
                     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}`, options)
+                    // console.log('admin:', response)
+                    if (response.data.image) {
+                        setForm({ ...form, image: response.data.image })
+                    }
                 }
             } catch (err) {
                 console.warn(err)

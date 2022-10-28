@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import Modal from 'react-modal';
 Modal.setAppElement('*');
 

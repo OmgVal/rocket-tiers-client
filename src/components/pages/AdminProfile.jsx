@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios'
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import Modal from 'react-modal';
 Modal.setAppElement('*');
 
@@ -72,6 +72,7 @@ export default function Profile({ currentUser, handleLogout }) {
                         setProfile(true)
                     } else { setProfile(false) }
 
+                    // console.log(response.data)
                     setUser(response.data)
                     setTournaments(response.data.tournaments)
                 }
@@ -83,7 +84,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		}
 		getProfile()
 		//username is passed in the array to render the useEffect again each time user goes to different user's profile
-	}, [username, isInitialRender])
+	}, [username, isInitialRender, currentUser, handleLogout])
 
 
 
@@ -100,6 +101,7 @@ export default function Profile({ currentUser, handleLogout }) {
 				}
 			}
 			const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${username}/photo`, formData, options)
+			return 
 			setUser(response.data)
 			setModalIsOpenToFalse()
 
@@ -188,7 +190,7 @@ export default function Profile({ currentUser, handleLogout }) {
 							<button onClick={setModalIsOpenToTrue} >{photoMsg}</button>
 						</div>
 
-						<Link to={`admin/${username}/edit`}>
+						<Link to={`/admin/${username}/edit`}>
 							<button>Edit Profile</button>
 						</Link>
 					</div>
@@ -202,7 +204,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		<div>
 			<div>
 				{photoCheck()}
-				<h3>@{currentUser.username}</h3>
+				{/* <h3>@{currentUser.username}</h3> */}
 				{user.bio}
 			</div>
 
