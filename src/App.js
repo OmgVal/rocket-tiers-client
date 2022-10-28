@@ -8,7 +8,6 @@ import {
 // Login pages
 import { useState, useEffect } from 'react'
 import Login from './components/pages/Login'
-import AdminLog from './components/pages/AdminLog'
 import Register from './components/pages/Register'
 import AdminRegister from './components/pages/AdminReg'
 
@@ -32,8 +31,6 @@ import EditComment from './components/pages/EditComment'
 // Profiles
 import Profile from './components/pages/Profile'
 import EditProfile from './components/pages/EditProfile'
-import AdminProfile from './components/pages/AdminProfile'
-import EditAdminProfile from './components/pages/EditAdminProfile'
 
 function App() {
   // the currently logged in user will be stored up here in state

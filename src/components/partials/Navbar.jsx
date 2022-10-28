@@ -1,54 +1,7 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
+
 import { Link } from 'react-router-dom'
 
 export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
-	const [admin, setAdmin] = useState(true)
-	const [user, setUser] = useState(false)
-	const [isInitialRender, setIsInitialRender] = useState(true);
-
-	useEffect(() => {
-		const adminCheck  = async () => {
-			try{
-				if (isInitialRender) {
-					if (admin == false) {
-						const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${currentUser.username}`)
-						console.log(response.data.id)
-						if (currentUser.id === response.data.id) {
-							setAdmin(true)
-						} else { 
-							setAdmin(false)
-							setUser(true) 
-						} return console.log(admin)
-	
-					}
-	
-				}
-				
-			}catch(err){
-				console.warn(err)
-			}
-		}
-		adminCheck()
-
-	})
-
-	const adminlog = (
-		<>
-			<Link to={`/admin/${currentUser.username}`}>
-				profile
-			</Link>	
-		</>
-
-	)
-
-	const userlog = (
-	<>
-		<Link to={`/${currentUser.username}`}>
-			profile
-		</Link>
-	</>
-	)
 
 	 const loggedIn = (
 		<>
@@ -56,8 +9,9 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 			<Link to="/">
 				<span onClick={handleLogout}>logout</span>
 			</Link>
-
-        	{admin ? adminlog : userlog}
+			<Link to={`/${username}`}>
+		 		profile
+		 	</Link>
     
 		</>
 	 )
