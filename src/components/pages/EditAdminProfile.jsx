@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
 
-export default function EditProfile({handleLogout, setCurrentUser, currentUser}){
+export default function EditAdminProfile({handleLogout, setCurrentUser, currentUser}){
     const { username } = useParams()
     const [isInitialRender, setIsInitialRender] = useState(true);
 

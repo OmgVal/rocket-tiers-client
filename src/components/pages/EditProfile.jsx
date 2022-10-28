@@ -54,7 +54,7 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
             // navigate back to the details page for this bounty
             // console.log('edit page:', response)
             setCurrentUser({...currentUser, username: response.data.username})
-            setForm({ username: response.data.username, ranks: response.data.ranks }) 
+            setForm({ username: response.data.username }) 
             // console.log(currentUser)
             navigate(`/${form.username}`)
         } catch (err) {

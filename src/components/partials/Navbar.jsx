@@ -1,54 +1,55 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from "react"
 import axios from "axios"
+import { Link } from 'react-router-dom'
 
 export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
-	const [admin, setAdmin] = useState(false)
-	const [msg, setMsg] = useState("")
+	const [admin, setAdmin] = useState(true)
+	const [user, setUser] = useState(false)
 	const [isInitialRender, setIsInitialRender] = useState(true);
-    
-    
-    useEffect(() => {
-        const checkAdmin = async () => {
-            try{
-                if (isInitialRender) {
-                    
-                    if (admin == false){
-                        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins`)
-                        console.log(response)
-                        if (currentUser.id === response.data._id) {
-                            setAdmin(true)
-                        } else { setAdmin(false) }
-    
-                    }
 
-                }
-                
-            }catch(err){
-                console.warn(err)
-                if(err.response) {
-                    setMsg(err.response.data.msg)
-                }
-            }
-        }
-    	checkAdmin()
-    },[ currentUser, setCurrentUser, isInitialRender])
+	useEffect(() => {
+		const adminCheck  = async () => {
+			try{
+				if (isInitialRender) {
+					if (admin == false) {
+						const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/${currentUser.username}`)
+						console.log(response.data.id)
+						if (currentUser.id === response.data.id) {
+							setAdmin(true)
+						} else { 
+							setAdmin(false)
+							setUser(true) 
+						} return console.log(admin)
+	
+					}
+	
+				}
+				
+			}catch(err){
+				console.warn(err)
+			}
+		}
+		adminCheck()
 
-	const adProf = (
+	})
+
+	const adminlog = (
 		<>
-		{msg}
-		<Link to={`/admin/${currentUser.username}`}>
+			<Link to={`/admin/${currentUser.username}`}>
 				profile
-		</Link>
+			</Link>	
 		</>
+
 	)
 
-	const userProf = (	
+	const userlog = (
+	<>
 		<Link to={`/${currentUser.username}`}>
-				profile
+			profile
 		</Link>
-
+	</>
 	)
+
 	 const loggedIn = (
 		<>
 			{/* if the user is logged in... */}
@@ -56,7 +57,8 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 				<span onClick={handleLogout}>logout</span>
 			</Link>
 
-			{admin ? adProf : userProf}
+        	{admin ? adminlog : userlog}
+    
 		</>
 	 )
 
