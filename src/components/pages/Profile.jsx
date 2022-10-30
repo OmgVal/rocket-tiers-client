@@ -55,7 +55,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		const getProfile = async () => {
 			try {
 				if (isInitialRender) {
-					// console.log(currentUser)
+					console.log(currentUser)
 					setIsInitialRender(false);
 					// get the token from local storage
 					const token = localStorage.getItem('jwt')

@@ -88,7 +88,7 @@ export default function NewTournament({currentUser, setCurrentUser}){
         if (!previewSource) return;
         try {
             const formData = new FormData()
-            formData.append('image', formImg)
+            formData.append('photo', formImg)
             formData.append('content', content)
             formData.append('title', title)
             formData.append('url', url)
@@ -132,7 +132,7 @@ export default function NewTournament({currentUser, setCurrentUser}){
                             <label htmlFor="file" >{previewSource ? 'Image uploaded successfully! Wrong image? Click to upload a new one.' : 'Drag and drop or browse to upload an image'} </label>
                             <input 
                                 type="file"
-                                id="image"
+                                id="photo"
                                 ref={inputRef}
                                 onChange={handleFileInputChange}
                                 value={fileInputState}

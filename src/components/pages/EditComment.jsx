@@ -32,7 +32,7 @@ export default function EditComment() {
             // axios.put/.post('url', data for the req body)
             const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${id}/comments/${commentid}`, form)
             setForm(response.data)
-            navigate(`/posts/${id}`)
+            navigate(`/tournaments/${id}`)
         } catch (err) {
             console.warn(err)
             if (err.response) {
@@ -58,7 +58,7 @@ export default function EditComment() {
                 </div>
 
                 <button type='submit' style={{ backgroundColor: '#FC6767', width: '150px' }}>Submit</button>
-                <Link to={`/posts/${id}`}>
+                <Link to={`/tournaments/${id}`}>
                     <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
                 </Link>
             </form>
