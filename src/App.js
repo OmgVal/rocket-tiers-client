@@ -101,7 +101,7 @@ function App() {
 
            <Route 
             path="/tournaments/:id/edit"
-            element={currentUser ? <EditTournament /> : <Navigate to="/login
+            element={currentUser ? <EditTournament currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
            <Route 

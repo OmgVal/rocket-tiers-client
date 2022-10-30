@@ -1,7 +1,7 @@
-import { useState, useRef,useEffect } from 'react'
+import { useState, useRef } from 'react'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 export default function Register({ currentUser, setCurrentUser }) {
 	// state for the controlled form
