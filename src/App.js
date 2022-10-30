@@ -81,20 +81,9 @@ function App() {
           />
 
           <Route 
-            path="/adminreg"
-            element={<AdminRegister currentUser={currentUser} setCurrentUser={setCurrentUser} />}
-          />
-
-          <Route 
             path="/login"
             element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />}
           />
-
-          <Route 
-            path="/admin"
-            element={<AdminLog currentUser={currentUser} setCurrentUser={setCurrentUser} />}
-          />
-
 
           {/* conditionally render auth locked routes */}
           <Route
@@ -144,16 +133,12 @@ function App() {
             element={currentUser ? <EditProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
-          <Route 
-            path="/admin/:username"
-            element={currentUser ? <AdminProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/login
-            " />}
-          />
            <Route 
-            path="/admin/:username/edit"
-            element={currentUser ? <EditAdminProfile handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
+            path="/:username/verified"
+            element={currentUser ? <AdminRegister handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
+
            {/* <Route 
             path="/search"
             element={currentUser ? <Search /> : <Navigate to="/login

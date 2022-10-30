@@ -69,7 +69,7 @@ export default function Login({ currentUser, setCurrentUser }) {
 				/>
 
 				<button type="submit">Login</button>
-				<p>admin? <Link to='/admin'>login here</Link></p>
+				<p>No Account? Sign Up <Link to='/register'> here</Link></p>
 			</form>
 		</div>
 	)

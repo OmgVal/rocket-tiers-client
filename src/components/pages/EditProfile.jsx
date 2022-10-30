@@ -118,6 +118,9 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                 <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
             </Link>
             <button onClick={handleDeleteUser} style={{ backgroundColor: 'red', width: '150px' }}>Delete Account</button>
+            <p>Have Adminkey? Submit it <Link to={`/${username}/verified`}>
+                here
+            </Link>.</p>
         </div>
         </>
     )

@@ -1,123 +1,118 @@
-import { useState, useRef } from 'react'
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
-import { Navigate } from 'react-router-dom'
+import { useEffect, useState } from "react"
+import { useParams, Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
-export default function AdminRegister({ currentUser, setCurrentUser }) {
-	// state for the controlled form
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
-	const [adminkey, setAdminkey] = useState('')
-	const [msg, setMsg] = useState('')
+export default function AdminReg({handleLogout, setCurrentUser, currentUser}){
+    const { username } = useParams()
+    const [isInitialRender, setIsInitialRender] = useState(true);
+    const [form, setForm] = useState({
+        username: username,
+		admin: 'true',
+        adminkey: ''
+        // profilePic: '' 
+        // edit user password?
+    })
+    const [msg, setMsg] = useState('')
 
-	// Cloudinary 
-	const [fileInputState, setFileInputState] = useState('')
-	
-	
-	// Multer
-	const inputRef = useRef(null)
-	const [formImg, setFormImg] = useState('')
+    const navigate = useNavigate()
 
-	const handleFileInputChange = (e) => {
-		const file = e.target.files[0]
-		// previewFile(file);
-		setFormImg(file)
-	}
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                if (isInitialRender) {
+                    setIsInitialRender(false);
+                    
+                    // get the token from local storage
+                    const token = localStorage.getItem('jwt')
+                    // make the auth headers
+                    const options = {
+                        headers: {
+                            'Authorization': token
+                        }
+                    }
+                    // hit the auth locked endpoint
+                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}`, options)
+                    // if (response.data.username) {
+                    //     setForm({ ...form, username: response.data.username })
+                    // }
+                    // console.log('admin',response.data)
+                }
+            } catch (err) {
+                console.warn(err)
+                if (err.response) {
+                    setMsg(err.response.data.msg)
+                }
+            }
+        }
+        getUser()
+    }, [form, username, isInitialRender])
 
-	// submit event handler
-	const handleSubmit = async e => {
-		e.preventDefault()
-		try {
-			// post form data to the backend
-			const formData = new FormData()
-			formData.append('username', username)
-			formData.append('password', password)
-            formData.append('adminkey', adminkey)
-			formData.append('image', formImg)
-			const options = {
-				headers: {
-					"Content-Type" : "multipart/form-data"
-				}
-			}
-			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins/register`, formData, options)
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault()
+			const token = localStorage.getItem('jwt')
+                    // make the auth headers
+                    const options = {
+                        headers: {
+                            'Authorization': token
+                        }
+                    }
+            // axios.put/.post('url', data for the req body)
+            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}/verified`, form)
+            // navigate back to the details page for this bounty
+            // console.log('edit page:', response)
+            setCurrentUser({...currentUser, username: response.data.username})
+            setForm({ username: response.data.username}) 
+            // console.log(currentUser)
+            navigate(`/${form.username}`)
+        } catch (err) {
+            console.warn(err)
+            if (err.response) {
+                setMsg(err.response.data.msg)
+            }
+        }
+    }
 
-			// save the token in localstorage
-			const { token } = response.data
-			localStorage.setItem('jwt', token)
+    return(
+        <>
+            <div>
+            <h1>Verification Form:</h1>
+            <p>{msg}</p>
 
-			// decode the token
-			const decoded = jwt_decode(token)
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <input
+                        type='hidden'
+                        id='username'
+                        value={form.username}
+                        onChange={e => setForm({ ...form, username: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <input
+                        type='hidden'
+                        id='admin'
+                        value={form.value}
+                        onChange={e => setForm({ ...form, admin: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='adminkey'>Your Adminkey:</label>
+                    <input
+                        type='password'
+                        id='adminkey'
+                        value={form.adminkey}
+                        onChange={e => setForm({ ...form, adminkey: e.target.value })}
+                    />
+                </div>
 
-			// set the user in App's state to be the decoded token
-			setCurrentUser(decoded)
+                <button type='submit' style={{ backgroundColor: '#FC6767', width: '150px' }}>Submit</button>
+            </form>
 
-		} catch (err) {
-			console.warn(err)
-			if (err.response) {
-				setMsg(err.response.data.msg)
-			}
-		}
- 	}
-
-	// conditionally render a navigate component
-	if (currentUser) {
-		return <Navigate to={`/admin/${username}`}/>
-	}
-
-	return (
-		<div>
-			<h1>Register an Admin:</h1>
-
-			<p>{msg}</p>
-
-			<form onSubmit={handleSubmit}>
-				<label htmlFor='username'>Username:</label>
-				<input 
-					type="username"
-					id="username"
-					placeholder='your username...'
-					onChange={e => setUsername(e.target.value)}
-					value={username}
-				/>
-
-				<label htmlFor='password'>Password:</label>
-				<input 
-					type="password"
-					id="password"
-					placeholder='password...'
-					onChange={e => setPassword(e.target.value)}
-					value={password}
-				/>
-
-				<label htmlFor='adminkey'>Admin Key:</label>
-				<input 
-					type="password"
-					id="adminkey"
-					placeholder='your adminkey...'
-					onChange={e => setAdminkey(e.target.value)}
-					value={adminkey}
-				/>
-				<div>
-					<input 
-						type = "file"  
-						name = "image" 
-						id = "image"
-						ref = {inputRef}					
-						onChange={handleFileInputChange} 
-						value={fileInputState}
-						accept=".jpg, .jpeg, .png"
-						style = {{height: '60px', color: formImg ? 'transparent' : ''}}
-
-					/>
-				<div className="preview">
-						<p>{formImg ? 'Profile photo uploaded successfully!' : 'No profile photo currently selected'}</p>
-				</div>
-
-					<label htmlFor='file'>Profile Photo (optional):</label>
-				</div>
-
-				<button type="submit">Register</button>
-			</form>
-		</div>
-	)
+            <Link to={`/${username}`}>
+                <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
+            </Link>
+        </div>
+        </>
+    )
 }

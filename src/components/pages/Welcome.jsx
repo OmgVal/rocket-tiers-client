@@ -13,6 +13,7 @@ export default function Welcome() {
 			
 
 			<div><h3>News</h3></div>
+			<iframe src="https://clips.twitch.tv/embed?clip=AuspiciousSuccessfulParrotKeyboardCat-PhTWaH_dbYaU5pIT&parent=localhost" frameborder="0" allowfullscreen="true" scrolling="no" height="278" width="420"></iframe>
 
 			<div>
 				<Link to='/tournaments'> <button>Tournaments</button></Link>

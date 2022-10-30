@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef,useEffect } from 'react'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 
 export default function Register({ currentUser, setCurrentUser }) {
 	// state for the controlled form
@@ -9,26 +9,28 @@ export default function Register({ currentUser, setCurrentUser }) {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [msg, setMsg] = useState('')
-
-	// Cloudinary 
-	const [fileInputState, setFileInputState] = useState('')
+	
+	    // Cloudinary 
+		const [fileInputState, setFileInputState] = useState('')
 	
 	
-	// Multer
-	const inputRef = useRef(null)
-	const [formImg, setFormImg] = useState('')
+		// Multer
+		const inputRef = useRef(null)
+		const [formImg, setFormImg] = useState('')
 
-	const handleFileInputChange = (e) => {
-		const file = e.target.files[0]
-		// previewFile(file);
-		setFormImg(file)
-	}
+		const handleFileInputChange = (e) => {
+			const file = e.target.files[0]
+			// previewFile(file);
+			setFormImg(file)
+		}
+		
+		
 
 	// submit event handler
 	const handleSubmit = async e => {
 		e.preventDefault()
 		try {
-			// post form data to the backend
+			// post fortm data to the backend
 			const formData = new FormData()
 			formData.append('username', username)
 			formData.append('email', email)
@@ -39,7 +41,6 @@ export default function Register({ currentUser, setCurrentUser }) {
 					"Content-Type" : "multipart/form-data"
 				}
 			}
-			console.log(formData)
 			const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/register`, formData, options)
 
 			// save the token in localstorage
@@ -62,7 +63,7 @@ export default function Register({ currentUser, setCurrentUser }) {
 
 	// conditionally render a navigate component
 	if (currentUser) {
-		return <Navigate to={`/admin/${username}`} />
+		return <Navigate to={`/${currentUser.username}`} />
 	}
 
 	return (
@@ -74,7 +75,7 @@ export default function Register({ currentUser, setCurrentUser }) {
 			<form onSubmit={handleSubmit}>
 				<label htmlFor='username'>Username:</label>
 				<input 
-					type="username"
+					type="text"
 					id="username"
 					placeholder='your username...'
 					onChange={e => setUsername(e.target.value)}

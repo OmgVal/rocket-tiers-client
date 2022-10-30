@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import Moment from 'react-moment';
-import { Link } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { Link, useParams } from "react-router-dom";
 
 export default function Tournaments({currentUser, setCurrentUser}){
     const [tournaments, setTournaments] = useState([])
@@ -10,8 +11,8 @@ export default function Tournaments({currentUser, setCurrentUser}){
     const [commentNum, setCommentNum] = useState({})   
     const [submissions, setSub] = useState({})
     const [subNum, setSubNum] = useState({})
-    const [admin, setAdmin] = useState(false)
     const [isInitialRender, setIsInitialRender] = useState(true);
+
     
     
     useEffect(() => {
@@ -26,15 +27,6 @@ export default function Tournaments({currentUser, setCurrentUser}){
                         commentNum[tournament._id] = tournament.comments.length
                     })
                     
-                    if (admin == false){
-                        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/admins`)
-                        console.log(response)
-                        if (currentUser.id === response.data._id) {
-                            setAdmin(true)
-                        } else { setAdmin(false) }
-    
-                    }
-
                 }
                 
             }catch(err){
@@ -92,7 +84,7 @@ export default function Tournaments({currentUser, setCurrentUser}){
                     </Link>
                 </div>
                     <div>
-                        <img src={tournament.photo} alt={tournament._id} className='mw-100' height="auto"/>
+                        <img src={tournament.photo} alt={tournament._id} />
                     </div>
                             
                     <div>
@@ -105,8 +97,8 @@ export default function Tournaments({currentUser, setCurrentUser}){
                     </div>
         
                     <div>
-                        <h4 className='fw-bold ms-0 mt-3'>{tournament.user.username}</h4>
-                        <h4 className='ms-2 mt-3'>{tournament.content}</h4>
+                        <h4>{tournament.user.username}</h4>
+                        <h4>{tournament.content}</h4>
                     </div>
 
                     <div>
@@ -135,12 +127,12 @@ export default function Tournaments({currentUser, setCurrentUser}){
 
     })
 
-
-    const displayBtn = (
+    const add = (
         <div>
             <Link to='/tournaments/new'><button>Add New</button></Link>
         </div>
     )
+    
 
     return(
         <div>  
@@ -148,7 +140,7 @@ export default function Tournaments({currentUser, setCurrentUser}){
             {msg}
             {renderTournaments} 
 
-            {admin ? displayBtn : 'error'}
+            {currentUser ? add : false}
         </div>
     )
 }

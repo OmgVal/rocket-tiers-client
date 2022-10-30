@@ -55,7 +55,7 @@ export default function Profile({ currentUser, handleLogout }) {
 		const getProfile = async () => {
 			try {
 				if (isInitialRender) {
-					console.log(currentUser)
+					// console.log(currentUser)
 					setIsInitialRender(false);
 					// get the token from local storage
 					const token = localStorage.getItem('jwt')
@@ -67,12 +67,12 @@ export default function Profile({ currentUser, handleLogout }) {
 					}
 					// hit the auth locked endpoint
 					const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${username}`, options)
-	
+					
+					// console.log('pro:', response)
 					//check to see if user is viewing their own profile and set Profile state accordingly
 					if (currentUser.id === response.data._id) {
 						setProfile(true)
 					} else { setProfile(false) }
-					console.log(response)
 					setUser(response.data)
 					setTournaments(response.data.submissions)
 				}

@@ -20,3 +20,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.categoryLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.categoryOptions {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.categoryInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}

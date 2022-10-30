@@ -2,6 +2,11 @@
 import { Link } from 'react-router-dom'
 
 export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
+	let user = ''
+	
+	if(currentUser){
+		user = currentUser.username
+	}
 
 	 const loggedIn = (
 		<>
@@ -9,7 +14,10 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 			<Link to="/">
 				<span onClick={handleLogout}>logout</span>
 			</Link>
-			<Link to={`/${username}`}>
+			<Link to="/tournaments">
+				<span onClick={handleLogout}>logout</span>
+			</Link>
+			<Link to={`/${user}`}>
 		 		profile
 		 	</Link>
     
