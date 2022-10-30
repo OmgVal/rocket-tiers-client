@@ -19,12 +19,15 @@ export default function Tournaments({currentUser, setCurrentUser}){
         const getTournaments = async () => {
             try{
                 if (isInitialRender) {
+                    setIsInitialRender(false)
                     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments`)
                     setTournaments(response.data)
+                    // console.log('tournaments:',response.data)
                     response.data.forEach((tournament) => {
-                        subNum[tournament._id] = tournament.submissions.length
-                        setSubNum(subNum)
-                        commentNum[tournament._id] = tournament.comments.length
+                        console.log(tournament)
+                        subNum[tournament._id] = (tournament.submissions.length += 1)
+                        // setSubNum(subNum)
+                        // commentNum[tournament._id] = tournament.comments.length
                     })
                     
                 }
@@ -37,75 +40,74 @@ export default function Tournaments({currentUser, setCurrentUser}){
             }
         }
         getTournaments()
-    },[subNum, currentUser, setCurrentUser, isInitialRender])
+    },[subNum, isInitialRender])
 
 
-    const handleComment = async (e, tournament_id) => {
-        e.preventDefault()
-        try{
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/comments`, {content: comment, userId : currentUser.id})
-            setComment("")
-            commentNum[tournament_id] = commentNum[tournament_id] + 1
-            setCommentNum(commentNum)
-        }catch(err){
-            console.warn(err)
-            if(err.response) {
-                setMsg(err.response.data.msg)
-            }
-        }
-    }
+    // const handleComment = async (e, tournament_id) => {
+    //     e.preventDefault()
+    //     try{
+    //         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/comments`, {content: comment, userId : currentUser.id})
+    //         setComment("")
+    //         commentNum[tournament_id] = commentNum[tournament_id] + 1
+    //         setCommentNum(commentNum)
+    //     }catch(err){
+    //         console.warn(err)
+    //         if(err.response) {
+    //             setMsg(err.response.data.msg)
+    //         }
+    //     }
+    // }
 
-    const handleSubs = async (e, tournament_id) => {
-        e.preventDefault()
-        try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/submissions`, {content: submissions, userId : currentUser.id})
-            setSubNum("")
-            subNum[tournament_id] = subNum[tournament_id] + 1
-            setSubNum(subNum)
-        }catch(err){
-            console.warn(err)
-            if(err.response) {
-                setMsg(err.response.data.msg)
-            }
-        }
-    }
+    // const handleSubs = async (e, tournament_id) => {
+    //     e.preventDefault()
+    //     try{
+    //         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/submissions`, {content: submissions, userId : currentUser.id})
+    //         setSubNum("")
+    //         subNum[tournament_id] = subNum[tournament_id] + 1
+    //         setSubNum(subNum)
+    //     }catch(err){
+    //         console.warn(err)
+    //         if(err.response) {
+    //             setMsg(err.response.data.msg)
+    //         }
+    //     }
+    // }
+    // console.log(subNum)
     
     const renderTournaments = tournaments.map((tournament, idx) => {
         return (
-        <div className="container " key={tournament._id}>
+        <div key={tournament._id}>
         
-            <div className="card my-2" key={`key-${idx}`}>
+            <div key={`key-${idx}`}>
                 
                 <div>
-                    <h6 className='mb-0 fw-bold'>{tournament.user.username}</h6>
-                </div>
-                <div>
-                    <Link to={`/tournaments/${tournament._id}`}>
+                    <Link to={`/tournaments/${tournament._id}`}>{tournament.title}
                     </Link>
                 </div>
-                    <div>
-                        <img src={tournament.photo} alt={tournament._id} />
-                    </div>
                             
                     <div>
-                        {subNum}
-                        {/* {sub[tournament._id]? <button onClick={() => handleSubs(tournament._id)}>❤️</button> : <button onClick={() => handleLikes(tournament._id)}>🤍</button>}
+                        {/* {subNum} */}
+                        {/* <p> {subNum[tournament._id]} Submissions </p>
                         <p>{likeNum[tournament._id]} likes</p> */}
+                    </div>
+                    <div>
+                        {/* <h4>{tournament.admin}</h4> */}
+                        <h4>{tournament.content}</h4>
+                        <h4>Ranks: {tournament.ranks}</h4>
+                        <h4>Reward: {tournament.reward} USD</h4>
+                        
+
                     </div>
                     <div>
                         <Moment fromNow>{tournament.createdAt}</Moment>
                     </div>
         
-                    <div>
-                        <h4>{tournament.user.username}</h4>
-                        <h4>{tournament.content}</h4>
-                    </div>
 
                     <div>
-                        <p><Link to={`/tournaments/${tournament._id}`} className='commentsLink'>View all {commentNum[tournament._id]} comments</Link> </p>
+                        {/* <p><Link to={`/tournaments/${tournament._id}`} className='commentsLink'>View all {commentNum[tournament._id]} comments</Link> </p> */}
                     </div>
                     <div>
-                        <form onSubmit={(e) => handleComment(e, tournament._id)}>
+                        {/* <form onSubmit={(e) => handleComment(e, tournament._id)}>
                             <div>
                                 <div>
                                     <label htmlFor="comment">{currentUser.username}</label>
@@ -117,7 +119,7 @@ export default function Tournaments({currentUser, setCurrentUser}){
                                 </div>
                                 
                             </div>
-                        </form>
+                        </form> */}
                     </div>
                 </div>
             </div>
@@ -137,10 +139,10 @@ export default function Tournaments({currentUser, setCurrentUser}){
     return(
         <div>  
             <h1>Tournaments</h1>      
+            {currentUser ? add : false}
             {msg}
             {renderTournaments} 
 
-            {currentUser ? add : false}
         </div>
     )
 }

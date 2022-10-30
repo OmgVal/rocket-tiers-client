@@ -8,7 +8,10 @@ import { useNavigate } from 'react-router-dom'
 
 export default function NewTournament({currentUser, setCurrentUser}){
     const [content, setContent] = useState("")
+    const [title, setTitle] = useState('')
     const [url, setUrl] = useState("")
+    const [ranks, setRanks] = useState("")
+    const [reward, setReward] = useState("")
     const [category, setCategory] = useState("")
     const [admin, setAdmin] = useState(false)
     const [msg, setMsg] = useState("")
@@ -87,7 +90,10 @@ export default function NewTournament({currentUser, setCurrentUser}){
             const formData = new FormData()
             formData.append('image', formImg)
             formData.append('content', content)
+            formData.append('title', title)
             formData.append('url', url)
+            formData.append('ranks', ranks)
+            formData.append('reward', reward)
             formData.append('category', category)
             formData.append('adminId', currentUser.id)
             const options = {
@@ -150,11 +156,22 @@ export default function NewTournament({currentUser, setCurrentUser}){
                                 style={{ height: "27px", fontSize: "14pt", width: "100%" }}
                                 required
                             >Stream:</textarea>
-                            <label htmlFor="content">Caption: </label>
+                            <label htmlFor="title">Title: </label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                value={title}
+                                placeholder='title'
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="content">Caption with ranks: </label>
                             <textarea
                                 type="text"
                                 name="content"
                                 id="content"
+                                placeholder="Do not forget to add in your ranks here!!"
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 style={{ height: "7rem", fontSize: "14pt", width: "100%" }}
@@ -180,6 +197,27 @@ export default function NewTournament({currentUser, setCurrentUser}){
                                 value={category}
                                 placeholder='Select Gamemode'
                                 onChange={(e) => setCategory(e.target.value)}
+                                required
+                            />
+                            
+                            <label htmlFor="ranks">Ranks: </label>
+                            <input
+                                type="text"
+                                name="ranks"
+                                id="ranks"
+                                value={ranks}
+                                placeholder='Which ranks?'
+                                onChange={(e) => setRanks(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="reward">Reward Amount: </label>
+                            <input
+                                type="text"
+                                name="reward"
+                                id="reward"
+                                value={reward}
+                                placeholder='Enter Number'
+                                onChange={(e) => setReward(e.target.value)}
                                 required
                             />
 

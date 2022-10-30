@@ -13,10 +13,7 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 			{/* if the user is logged in... */}
 			<Link to="/">
 				<span onClick={handleLogout}>logout</span>
-			</Link>
-			<Link to="/tournaments">
-				<span onClick={handleLogout}>logout</span>
-			</Link>
+			</Link>{' | '}
 			<Link to={`/${user}`}>
 		 		profile
 		 	</Link>
@@ -29,11 +26,11 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 			{/* if the user is not logged in... */}
 			<Link to="/register">
 				register
-			</Link>
+			</Link>{' | '}
 
 			<Link to="/login">
 				login
-			</Link>
+			</Link>{' | '}
 		</>
 	 )
 
@@ -42,7 +39,10 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 			{/* user always sees this section */}
 			<Link to="/">
 				<p>User App</p>
-			</Link>
+			</Link> {' | '}
+			<Link to="/tournaments">
+				Tournaments
+			</Link>{' | '}
 
 			{currentUser ? loggedIn : loggedOut}
 		</nav>
