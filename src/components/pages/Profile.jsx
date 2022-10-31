@@ -147,8 +147,8 @@ export default function Profile({ currentUser, handleLogout }) {
 	const viewUserProfile = (
 		<div>
 			{/* if the user viewing their own profile... */}
-			<div>
-				<div>
+			<div className='flex justify-center'>
+				<div className='flex justify-center'>
 					{photoCheck()}
 					<h3 >@{currentUser.username}</h3>
 					{ranksCheck()}
