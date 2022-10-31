@@ -120,7 +120,7 @@ export default function Profile({ currentUser, handleLogout }) {
 			)
 		} else {
 			return (
-				<p>Click 'Edit Profile' to add ranks & platform...</p>
+				<p></p>
 			)
 		}
 	}
@@ -150,7 +150,7 @@ export default function Profile({ currentUser, handleLogout }) {
 			<div className='flex justify-center'>
 				<div className='flex justify-center'>
 					{photoCheck()}
-					<h3 >@{currentUser.username}</h3>
+					<h3 className='text-2xl pt-4 px-2'>@{currentUser.username}</h3>
 					{ranksCheck()}
 					<Modal isOpen={modalIsOpen}>
 						<button onClick={setModalIsOpenToFalse}>close</button>
@@ -180,22 +180,23 @@ export default function Profile({ currentUser, handleLogout }) {
 					</Modal>
 				</div>
 
-				<div>
-					<div><p>{tournaments} Tournaments</p></div>
-				</div>
 
-				<div>
-					<div>
-						<div>
+			</div>
+				<div className='grid'>
+					<div className='inline-flex justify-center '>
+						<div className='p-3'>
 							<button onClick={setModalIsOpenToTrue} >{photoMsg}</button>
 						</div>
-
-						<Link to={`/${username}/edit`}>
-							<button>Edit Profile</button>
-						</Link>
+						<div>
+							<Link to={`/${username}/edit`}>
+								<button className='text-cyan-400 p-3'>Edit Profile</button>
+							</Link>
+						</div>
+					</div>
+					<div className='flex justify-center text-2xl'>
+						<div><p>{tournaments} Tournaments</p></div>
 					</div>
 				</div>
-			</div>
 		</div>
 	)
 
@@ -203,13 +204,16 @@ export default function Profile({ currentUser, handleLogout }) {
 		// if the user is viewing someone else's profile...
 		<div>
 			<div>
-				{photoCheck()}
+				<div className='text-cyan-400'>
+					{photoCheck()}
+				</div>
+				
 				<h3>@{username}</h3>
 				{user.bio}
 			</div>
 
 			<div>
-				<div><p>{tournaments} Tournaments</p></div>
+				<div><p>{tournaments} Tournament</p></div>
 			</div>
 		</div>
 
