@@ -43,21 +43,6 @@ export default function Tournaments({currentUser, setCurrentUser}){
     },[subNum, isInitialRender])
 
 
-    // const handleComment = async (e, tournament_id) => {
-    //     e.preventDefault()
-    //     try{
-    //         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/comments`, {content: comment, userId : currentUser.id})
-    //         setComment("")
-    //         commentNum[tournament_id] = commentNum[tournament_id] + 1
-    //         setCommentNum(commentNum)
-    //     }catch(err){
-    //         console.warn(err)
-    //         if(err.response) {
-    //             setMsg(err.response.data.msg)
-    //         }
-    //     }
-    // }
-
     // const handleSubs = async (e, tournament_id) => {
     //     e.preventDefault()
     //     try{

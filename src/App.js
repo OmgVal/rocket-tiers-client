@@ -106,22 +106,22 @@ function App() {
           />
            <Route 
             path="/tournaments/:id/submission"
-            element={currentUser ? <Submission /> : <Navigate to="/login
+            element={currentUser ? <Submission currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
            <Route 
             path="/tournaments/:id/submission/:subid"
-            element={currentUser ? <EditSubmission /> : <Navigate to="/login
+            element={currentUser ? <EditSubmission currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
            <Route 
             path="/tournaments/:id/submissions"
-            element={currentUser ? <Submissions /> : <Navigate to="/login
+            element={currentUser ? <Submissions currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <Navigate to="/login
             " />}
           />
           <Route 
             path="/tournaments/:id/comments/:commentid/edit"
-            element={currentUser ? <EditComment /> : <Navigate to="/login" />}
+            element={currentUser ? <EditComment currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/login" />}
           />
           <Route 
             path="/:username"

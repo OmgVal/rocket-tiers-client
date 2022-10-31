@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 export default function NewTournament({currentUser, setCurrentUser}){
     const [content, setContent] = useState("")
     const [title, setTitle] = useState('')
+    const [date, setDate] = useState('')
     const [url, setUrl] = useState("")
     const [ranks, setRanks] = useState("")
     const [reward, setReward] = useState("")
@@ -53,7 +54,7 @@ export default function NewTournament({currentUser, setCurrentUser}){
                     // console.log('newtour:', user)
                     // console.log('newtour:', user.data.admin)
 
-                    if(user.data.admin) return setAdmin(true)
+                    if(user.data.admin == true) return setAdmin(true)
                 }
             } catch (err) {
                 console.warn(err)
@@ -88,9 +89,10 @@ export default function NewTournament({currentUser, setCurrentUser}){
         if (!previewSource) return;
         try {
             const formData = new FormData()
-            formData.append('photo', formImg)
+            formData.append('image', formImg)
             formData.append('content', content)
             formData.append('title', title)
+            formData.append('date', date)
             formData.append('url', url)
             formData.append('ranks', ranks)
             formData.append('reward', reward)
@@ -132,7 +134,7 @@ export default function NewTournament({currentUser, setCurrentUser}){
                             <label htmlFor="file" >{previewSource ? 'Image uploaded successfully! Wrong image? Click to upload a new one.' : 'Drag and drop or browse to upload an image'} </label>
                             <input 
                                 type="file"
-                                id="photo"
+                                id="image"
                                 ref={inputRef}
                                 onChange={handleFileInputChange}
                                 value={fileInputState}
@@ -166,12 +168,22 @@ export default function NewTournament({currentUser, setCurrentUser}){
                                 onChange={(e) => setTitle(e.target.value)}
                                 required
                             />
-                            <label htmlFor="content">Caption with ranks: </label>
+                            <label htmlFor="date">Date: </label>
+                            <input
+                                type="text"
+                                name="date"
+                                id="date"
+                                value={date}
+                                placeholder='date with time'
+                                onChange={(e) => setDate(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="content">Caption: </label>
                             <textarea
                                 type="text"
                                 name="content"
                                 id="content"
-                                placeholder="Do not forget to add in your ranks here!!"
+                                placeholder="sponsers & details"
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 style={{ height: "7rem", fontSize: "14pt", width: "100%" }}

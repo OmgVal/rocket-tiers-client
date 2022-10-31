@@ -1,22 +1,21 @@
 import { useState, useEffect, useRef } from "react"
 import axios from "axios"
-import Moment from 'react-moment';
 import { Link, useParams, useNavigate } from "react-router-dom";
-import Modal from 'react-modal';
-Modal.setAppElement('*');
+import Moment from 'react-moment';
 
 export default function Tournament({currentUser, setCurrentUser}){
     const { id } = useParams()
-    const [tournament, setTournament] = useState({admin: {_id: ''}})
+    const [tournament, setTournament] = useState([])
+    const [subAlready, setSubAlready] = useState(false)
+    const [roster, setRoster] = useState([])
     const [msg, setMsg] = useState("")
-    const [tour, setTour] = useState([])
+    const [teamsize, setTeamsize] = useState("")
+    const [othermember, setOthermember] = useState('')
     const [currUser, setCurrUser] = useState(false)
     const [comment, setComment] = useState("")
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [previewSource, setPreviewSource] = useState('')
     const [comments, setComments] = useState([])
     const [submissions, setSubmissions] = useState(0)
-    const [sub, setSub] = useState(false)
+    const [submission, setSubmission] = useState('')
     const [isInitialRender, setIsInitialRender] = useState(true);
 
     let user = ''
@@ -26,36 +25,6 @@ export default function Tournament({currentUser, setCurrentUser}){
 	} 
 
     const navigate = useNavigate()
-    // Cloudinary 
-	const [fileInputState, setFileInputState] = useState('')
-
-
-	// Multer
-	const inputRef = useRef(null)
-	const [formImg, setFormImg] = useState('')
-
-	const previewFile = (file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file); //Converts the file to a url
-        reader.onloadend = () => { //Once the reader is done loading
-            setPreviewSource(reader.result);
-
-        }
-    }
-
-	const setModalIsOpenToTrue = () => {
-		setModalIsOpen(true)
-	}
-
-	const setModalIsOpenToFalse = () => {
-		setModalIsOpen(false)
-	}
-
-	const handleFileInputChange = (e) => {
-		const file = e.target.files[0]
-		previewFile(file);
-		setFormImg(file)
-	}
 
     
     useEffect(() => {
@@ -65,14 +34,16 @@ export default function Tournament({currentUser, setCurrentUser}){
                 setIsInitialRender(false)
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${id}`)
                 setTournament(response.data)
+                setRoster(response.data.roster)
                 setComments(response.data.comments)
                 setSubmissions(response.data.submissions)
+                if(response.data.submissions.includes(currentUser.id)) {
+                    setSubAlready(true)
+                }
                 // console.log(currentUser.id)
                 // console.log(response.data.admin)
                 
                 if (currentUser.id == response.data.admin) return setCurrUser(true)
-
-                setTour(response.data)
 
             
             // response.data.submissions.forEach((submission) => {
@@ -90,51 +61,7 @@ export default function Tournament({currentUser, setCurrentUser}){
             }
         }
         getTour()
-    }, [currentUser, isInitialRender])
-
-    const handlePhotoUpdate = async e => {
-		e.preventDefault()
-		try {
-			// post form data to the backend
-			const formData = new FormData()
-			formData.append('id', id)
-			formData.append('photo', formImg)
-			const options = {
-				headers: {
-					"Content-Type": "multipart/form-data"
-				}
-			}
-			const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${id}/photo`, formData, options)
-			setTour(response.data)
-			setModalIsOpenToFalse()
-
-		} catch (err) {
-			console.warn(err)
-			if (err.response) {
-				setMsg(err.response.data.msg)
-			}
-		}
-	}
-
-    let photoMsg;
-	const photoCheck = () => {
-		if (tour.image) {
-            photoMsg = 'Edit Photo'
-			return (
-				<>
-					<img src={tour.photo} className='tournamentPhoto' alt='tournament bracket' />
-				</>
-			)
-		} else {
-            photoMsg = 'Edit Photo'
-			return (
-				<>
-					<img src={require('../../assets/RocketTiers.png')} alt='tournament bracket' className='tournamentPhoto' />
-				</>
-			)
-		}
-	}
-    photoCheck()
+    }, [currentUser, isInitialRender, setSubAlready])
             
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -149,7 +76,7 @@ export default function Tournament({currentUser, setCurrentUser}){
             }
         }
     }
-            // console.log(currentUser)
+     // console.log(currentUser)
             
               
     const handleComment = async (e) => {
@@ -166,6 +93,7 @@ export default function Tournament({currentUser, setCurrentUser}){
             }
         }
     }
+    
     const deleteComment = async (commentid) => {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${id}/comments/${commentid}`)
@@ -177,15 +105,17 @@ export default function Tournament({currentUser, setCurrentUser}){
             }
         }
     }
-
-    const handleSubs = async (e, tournament_id) => {
+    
+    console.log(comments)
+    
+    const handleCreate = async (e) => {
         e.preventDefault()
-        try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${tournament_id}/submissions`)
-            setSubmissions("")
-            submissions[tournament_id] = submissions[tournament_id] + 1
-            setSubmissions(submissions)
-        }catch(err){
+        try {
+            console.log(user)
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api-v1/tournaments/${id}/comments`, { content: comment, user: user.id })
+            setSubmissions([...comments, response.data])
+            setSubmission("")
+        } catch (err) {
             console.warn(err)
             if(err.response) {
                 setMsg(err.response.data.msg)
@@ -193,7 +123,28 @@ export default function Tournament({currentUser, setCurrentUser}){
         }
     }
 
-    console.log(comments)
+    const submissionForm = (
+        <form>
+            <div>
+                <div>
+
+                    <label htmlFor="teamsize">Teamsize:</label>
+                    <input type="text" 
+                    placeholder='add teamsize...' 
+                    value={teamsize} 
+                    onChange={(e) => setTeamsize(e.target.value)} id="teamsize"/>
+
+                    <label htmlFor="othermember">Othermember:</label>
+                    <input type="text" 
+                    placeholder='list all team usernames(must have account)' 
+                    value={othermember} 
+                    onChange={(e) => setOthermember(e.target.value)} />
+                    <button type="submit" style = {{backgroundColor: '#FC6767', width: '80px' }} onSubmit={handleCreate}>Submit</button>
+                </div>
+                
+            </div>
+        </form>
+    )
 
     
     const renderComments = comments.map((comment, idx) => {
@@ -225,44 +176,15 @@ export default function Tournament({currentUser, setCurrentUser}){
     return(
         <div>  
         
-            <h1>{tournament.title}</h1>      
+            <h1>{tournament.title}</h1>  
+            <img src={tournament.image} alt={tournament.title} />    
             {msg}
 
             {currUser ? <Link to={`/tournaments/${tournament._id}/edit`}> <button> Edit</button> </Link> : <p></p>}
             {currUser ? <button onClick={handleDelete}> Delete</button> : <p></p>}
 
             <div key={tournament._id}>
-                
-              <div>
-              {photoCheck()}
-              <Modal isOpen={modalIsOpen}>
-						<button onClick={setModalIsOpenToFalse}>close</button>
-						<form onSubmit={handlePhotoUpdate}>
-							<div>
-								<input
-									type="file"
-									name="image"
-									id="image"
-									ref={inputRef}
-									onChange={handleFileInputChange}
-									value={fileInputState}
-									alt='user profile pic'
-									accept=".jpg, .jpeg, .png"
-									style={{ color: formImg ? 'transparent' : '' }}
-								/>
-								<label htmlFor='file'>Upload Profile Photo:</label>
-							</div>
-							{previewSource ?
-								<img src={previewSource} alt="file preview" style={{ height: 'auto', width: '100%' }} /> : ''
-							}
-							<div>
-								<button type="submit" >Submit</button>
 
-							</div>
-						</form>
-					</Modal>
-                    
-                </div>
                             
                     <div>
                         <h2> Stream: </h2>
@@ -277,6 +199,7 @@ export default function Tournament({currentUser, setCurrentUser}){
                     <div>
                         {/* <h4>{tournament.admin}</h4> */}
                         <h4>{tournament.content}</h4>
+                        <h4>{tournament.date}</h4>
                         <h4>Ranks: {tournament.ranks}</h4>
                         <h4>Reward: {tournament.reward} USD</h4>
 
@@ -285,7 +208,10 @@ export default function Tournament({currentUser, setCurrentUser}){
                     </div>
                     <div>
                         <Moment fromNow>{tournament.createdAt}</Moment>
-                    </div>        
+                    </div> 
+                    <div>
+                        {subAlready == false ? submissionForm : true }
+                    </div>       
 
                     <div>   
                         {renderComments}
@@ -305,6 +231,11 @@ export default function Tournament({currentUser, setCurrentUser}){
                             </div>
                         </form>
                     </div>
+                    <div>
+                        <p> Want to Sign Up? <Link to={`/tournaments/${tournament._id}/submission`}><button>Enter Here!</button></Link></p>
+
+                    </div>
+
                 </div>
             </div>
     )
