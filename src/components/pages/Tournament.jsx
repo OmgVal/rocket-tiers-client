@@ -153,7 +153,7 @@ export default function Tournament({currentUser, setCurrentUser}){
                 <div>
                     <div>
                         <span>{comment.user.username} </span>
-                        {/* {comment.user.admin == true ? <img src='../' className='verifiedComment' alt='verified user' style={{width: '20px'}} /> : false }: */}
+                        {comment.user.admin == true ? <img src={require('../../assets/check.png')} className='verifiedComment' alt='verified user' style={{width: '20px'}} /> : false }:
                             <p>{comment.content}</p>
                     </div>
                     <div>

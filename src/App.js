@@ -13,7 +13,7 @@ import AdminRegister from './components/pages/AdminReg'
 
 // Main Page & Nav
 import Navbar from './components/partials/Navbar'
-import './App.css'
+import './index.css'
 import jwt_decode from 'jwt-decode'
 import Welcome from './components/pages/Welcome'
 

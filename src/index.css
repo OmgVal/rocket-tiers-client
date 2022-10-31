@@ -1,41 +1,32 @@
+@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap);
 
-body, html {
-  height: 100%;
-  background: linear-gradient(to top right, rgb(0, 47, 135), 70%, rgb(147, 224, 255));
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbarLogo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    margin-left: -75px;
+    width: 100px;
+    height: 100px;
 }
 
-.profileAvi {
-  width: 70px;
-  height: 70px;
-  border-radius: 50px;
+body {
+    height: 100vh;
+    width: fit-content;
+    color: azure;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    background: rgb(8, 8, 46);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.App {
+    height: 100vh;
+    width: 100vw;
 }
 
-.categoryLabel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.categoryOptions {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
-.categoryInput {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
+.Welcome {
+    height: 100vh;
+    width: 100vw;
 }
