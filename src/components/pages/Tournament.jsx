@@ -174,68 +174,78 @@ export default function Tournament({currentUser, setCurrentUser}){
     })
 
     return(
-        <div>  
+        <div> 
+            <div className="flex justify-center py-8 text-4xl font-bold">
+                <h1>{tournament.title}</h1>
+            </div>
         
-            <h1>{tournament.title}</h1>  
-            <img src={tournament.image} alt={tournament.title} />    
-            {msg}
 
-            {currUser ? <Link to={`/tournaments/${tournament._id}/edit`}> <button> Edit</button> </Link> : <p></p>}
-            {currUser ? <button onClick={handleDelete}> Delete</button> : <p></p>}
+            <div className="flex justify-center col-2">
+                {msg}
 
-            <div key={tournament._id}>
+                {currUser ? <Link to={`/tournaments/${tournament._id}/edit`}> <button> Edit</button> </Link> : <p></p>}
+                {currUser ? <button onClick={handleDelete}> Delete</button> : <p></p>}
 
-                            
-                    <div>
-                        <h2> Stream: </h2>
-                        <iframe src={tournament.url} frameBorder="0" allowFullScreen={true} scrolling="no" height="378" width="620"></iframe>
+                <div key={tournament._id}>
 
-                    </div>
-                    <div>
-                        {/* <p>{subNum} Submissions</p> */}
-                         <p> {submissions.length} Submissions </p>
-                        {/* <p>{likeNum[tournament._id]} likes</p>  */}
-                    </div>
-                    <div>
-                        {/* <h4>{tournament.admin}</h4> */}
-                        <h4>{tournament.content}</h4>
-                        <h4>{tournament.date}</h4>
-                        <h4>Ranks: {tournament.ranks}</h4>
-                        <h4>Reward: {tournament.reward} USD</h4>
-
-                        
-
-                    </div>
-                    <div>
-                        <Moment fromNow>{tournament.createdAt}</Moment>
-                    </div> 
-                    <div>
-                        {subAlready == false ? submissionForm : true }
-                    </div>       
-
-                    <div>   
-                        {renderComments}
-                    </div>
-                    <div>
-                        <form onSubmit={(e) => handleComment(e, tournament._id)}>
-                            <div>
-                                <div>
-                                    <label htmlFor="comment">{currentUser.username}</label>
-                                    <input type="text" 
-                                    placeholder='add comment...' 
-                                    value={comment} 
-                                    onChange={(e) => setComment(e.target.value)} id="comment"/>
-                                    <button type="submit" style = {{backgroundColor: '#FC6767', width: '80px' }}>Submit</button>
-                                </div>
-                                
+                        <div className="pb-8">
+                            <h2 className="flex justify-center py-3 text-2xl"> Stream: </h2>
+                            <div className='flex justify-center'>
+                                <iframe src={tournament.url} frameBorder="0" allowFullScreen={true} scrolling="no" height="378" width="620"></iframe>
                             </div>
-                        </form>
-                    </div>
-                    <div>
-                        <p> Want to Sign Up? <Link to={`/tournaments/${tournament._id}/submission`}><button>Enter Here!</button></Link></p>
+                        </div>
+
+                        <div className="inline-flex">
+                            <div>
+                                <img src={tournament.image} alt={tournament.title} style={{width: '100'}}/>    
+                            </div>  
+                         <div className="pl-2">
+                                <div>
+                                    {/* <h4>{tournament.admin}</h4> */}
+                                    <h4 className="text-xl pb-1 font-bold">{tournament.date}</h4>
+                                    <h4 className='pb-1'>{tournament.content}</h4>
+                                    <h4>Ranks: {tournament.ranks}</h4>
+                                    <h4>Reward: {tournament.reward} USD</h4>
+                                </div>
+                                <div>
+                                    {/* <p>{subNum} Submissions</p> */}
+                                    <p> {submissions.length} Submissions </p>
+                                    {/* <p>{likeNum[tournament._id]} likes</p>  */}
+                                </div>
+                                <div>
+                                    <Moment fromNow>{tournament.createdAt}</Moment>
+                                </div> 
+                                {/* <div>
+                                    {subAlready == false ? submissionForm : true }
+                                </div>        */}
+
+                                <div>   
+                                    {renderComments}
+                                </div>
+                                <div className="pl-2">
+                                    <form onSubmit={(e) => handleComment(e, tournament._id)}>
+                                        <div>
+                                            <div>
+                                                <label htmlFor="comment"></label>
+                                                <input type="text" 
+                                                placeholder='add comment...' 
+                                                value={comment} 
+                                                onChange={(e) => setComment(e.target.value)} id="comment"/>
+                                                <button type="submit" style = {{backgroundColor: 'gray', width: '80px' }}>Submit</button>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            </div>  
+                        <div>
+                            {/* <p> Want to Sign Up? <Link to={`/tournaments/${tournament._id}/submission`}><button>Enter Here!</button></Link></p> */}
+
+                        </div>
 
                     </div>
-
                 </div>
             </div>
     )

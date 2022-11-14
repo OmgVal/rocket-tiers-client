@@ -57,9 +57,9 @@ export default function EditComment() {
                     />
                 </div>
 
-                <button type='submit' style={{ backgroundColor: '#FC6767', width: '150px' }}>Submit</button>
+                <button type='submit' style={{ width: '150px' }}>Submit</button>
                 <Link to={`/tournaments/${id}`}>
-                    <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
+                    <button style={{ width: '150px' }}>Cancel</button>
                 </Link>
             </form>
 

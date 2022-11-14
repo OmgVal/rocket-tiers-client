@@ -233,10 +233,7 @@ export default function NewTournament({currentUser, setCurrentUser}){
                                 required
                             />
 
-                            <button type="submit" style={{ backgroundColor: '#FC6767', width: '10rem' }} onClick={handleCreate}>Submit</button>
-                        </form>
-                        <form>
-
+                            <button type="submit" style={{ width: '10rem' }} onClick={handleCreate}>Submit</button>
                         </form>
                     </div>
                 </div>

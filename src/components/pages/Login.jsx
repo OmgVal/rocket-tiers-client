@@ -49,7 +49,7 @@ export default function Login({ currentUser, setCurrentUser }) {
 				<img className='w-50 h-full object-cover' src={require('../../assets/rlLogin.jpg')} alt="rocketleague field with ball"  />
 			</div>
 			 
-			 <div className='g-gray-800 flex flex-col justify-center'>
+			 <div className='bg-gray-800 flex flex-col justify-center'>
 				<form className='max-w-[400px] w-full mx-auto rounded-lg bg-gray-900 p-8 px-8' onSubmit={handleSubmit}>
 				<h1 className='text-4xl dark:text-white font-bold text-center'>Login to Your Account:</h1>
 					<div className='flex flex-col text-gray-400 py-2'>

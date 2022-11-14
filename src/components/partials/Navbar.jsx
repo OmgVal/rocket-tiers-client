@@ -9,10 +9,10 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 	}
 
 	 const loggedIn = (
-		<nav className='top-0 left-0 w-full py-3'>
+		<nav className='top-0 left-0 w-full py-3 navBar'>
 			<div className='container mx-auto flex justify-between'>
 				<img src={require('../../assets/RocketTiers.png')} alt='logo' className='h-8 navbarLogo'/>
-				<ul className='text-sm tracking-wide items-center flex gap-x-8'> 
+				<ul className='text-xl tracking-wide items-center flex gap-x-8'> 
 				 	<li className="hover:scale-125 duration-300 py-1 hover:text-cyan-400">
 						<Link className='cursor-pointer' to="/">
 							<p>Home</p>
@@ -43,7 +43,7 @@ export default function Navbar({ currentUser, handleLogout, setCurrentUser }) {
 		<nav className='top-0 left-0 w-full py-3'>
 			<div className='container mx-auto flex justify-between'>
 				<img src={require('../../assets/RocketTiers.png')} alt='logo' className='h-8 navbarLogo'/>
-				<ul className='text-sm tracking-wide items-center flex gap-x-8'> 
+				<ul className='text-xl tracking-wide items-center flex gap-x-8'> 
 				 	<li className="hover:scale-125 duration-300 py-1 hover:text-cyan-400">
 						<Link className='cursor-pointer' to="/">
 							<p>Home</p>

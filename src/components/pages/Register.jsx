@@ -72,9 +72,9 @@ export default function Register({ currentUser, setCurrentUser }) {
 				<img className='w-50 h-full object-cover' src={require('../../assets/rlLogin.jpg')} alt="rocketleague field with ball"  />
 			</div>
 			 
-			 <div className='g-gray-800 flex flex-col justify-center'>
+			 <div className='bg-gray-800 flex flex-col justify-center'>
 				<form className='max-w-[400px] w-full mx-auto rounded-lg bg-gray-900 p-8 px-8' onSubmit={handleSubmit}>
-				<h1>Register for an account:</h1>
+				<h1 className='text-4xl'>Register for an account:</h1>
 				<div className='flex flex-col text-gray-400 py-2'>
 					<label htmlFor='username'>Username:</label>
 					<input className='p-2 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none'
@@ -127,7 +127,7 @@ export default function Register({ currentUser, setCurrentUser }) {
 
 
 
-					<button type="submit">Register</button>
+					<button type="submit" className='hover:scale-125 duration-300 py-1 hover:text-cyan-400 font-underline'>Register</button>
 				</form>
 				<p>{msg}</p>
 			</div>

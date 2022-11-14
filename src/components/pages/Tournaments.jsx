@@ -63,10 +63,11 @@ export default function Tournaments({currentUser, setCurrentUser}){
         return (
         <div key={tournament._id}>
         
-            <div key={`key-${idx}`}>
+            <div key={`key-${idx}`} className='py-4'>
                 
                 <div>
-                    <Link to={`/tournaments/${tournament._id}`}>{tournament.title}
+                    <Link to={`/tournaments/${tournament._id}`} className='text-cyan-800 text-2xl'>
+                    {tournament.title}
                     </Link>
                 </div>
                             
@@ -115,18 +116,23 @@ export default function Tournaments({currentUser, setCurrentUser}){
     })
 
     const add = (
-        <div>
+        <div className="py-6">
             <Link to='/tournaments/new'><button>Add New</button></Link>
         </div>
     )
     
 
     return(
-        <div>  
-            <h1>Tournaments</h1>      
-            {currentUser ? add : false}
+        <div className='flex justify-center'>  
+            <div>
+                <h1>Tournaments</h1>      
+                {currentUser ? add : false}
+                <div>
+                    {renderTournaments}
+                </div>
+            </div>
+             
             {msg}
-            {renderTournaments} 
 
         </div>
     )

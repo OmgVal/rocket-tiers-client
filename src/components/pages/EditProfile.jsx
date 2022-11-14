@@ -111,11 +111,11 @@ export default function EditProfile({handleLogout, setCurrentUser, currentUser})
                     />
                 </div>
 
-                <button type='submit' style={{ backgroundColor: '#FC6767', width: '150px' }}>Submit</button>
+                <button type='submit' style={{ width: '150px' }}>Submit</button>
             </form>
 
             <Link to={`/${username}`}>
-                <button style={{ backgroundColor: '#FC6767', width: '150px' }}>Cancel</button>
+                <button style={{ width: '150px' }}>Cancel</button>
             </Link>
             <button onClick={handleDeleteUser} style={{ backgroundColor: 'red', width: '150px' }}>Delete Account</button>
             <p>Have Adminkey? Submit it <Link to={`/${username}/verified`}>
